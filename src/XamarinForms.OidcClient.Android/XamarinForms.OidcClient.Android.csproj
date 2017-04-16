@@ -136,6 +136,10 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Oidc\ChromeCustomTabWebView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Oidc\OidcCallbackInterceptorActivity.cs" />
     <Compile Include="Services\Oidc\OidcClientService.cs" />
   </ItemGroup>
   <ItemGroup>

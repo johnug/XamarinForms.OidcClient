@@ -2,6 +2,6 @@
 {
     public interface IOidcClientService
     {
-        IdentityModel.OidcClient.OidcClient PrepareClient(string authority, string clientId, string clientSecret, string scope, string returnUrl);
+        IdentityModel.OidcClient.OidcClient PrepareClient(string authority, string clientId, string clientSecret, string scope, string redirectUrl);
     }
 }
