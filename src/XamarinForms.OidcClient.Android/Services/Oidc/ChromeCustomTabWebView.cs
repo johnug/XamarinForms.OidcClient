@@ -21,12 +21,10 @@ namespace XamarinForms.OidcClient.Droid.Services.Oidc
     {
         public event EventHandler<HiddenModeFailedEventArgs> HiddenModeFailed;
 
-        private readonly Activity _context;
         private CustomTabsActivityManager _customTabs;
 
-        public ChromeCustomTabsWebView(Context context)
+        public ChromeCustomTabsWebView()
         {
-            _context = (Activity)context;
         }
 
         public Task<InvokeResult> InvokeAsync(InvokeOptions options)
@@ -41,12 +39,14 @@ namespace XamarinForms.OidcClient.Droid.Services.Oidc
                 throw new ArgumentException("Missing EndUrl", nameof(options));
             }
 
+            var _context = Forms.Context;
+
             // must be able to wait for the intent to be finished to continue
             // with setting the task result
             var _tcs = new TaskCompletionSource<InvokeResult>();
 
             // create & open chrome custom tab
-            _customTabs = new CustomTabsActivityManager(_context);
+            _customTabs = new CustomTabsActivityManager((Activity)_context);
 
             // build custom tab
             var builder = new CustomTabsIntent.Builder(_customTabs.Session)
@@ -63,6 +63,7 @@ namespace XamarinForms.OidcClient.Droid.Services.Oidc
             MessagingCenter.Unsubscribe<Activity, string>(this, "OIDC.Login.Success");
             MessagingCenter.Subscribe<Activity, string>(this, "OIDC.Login.Success", (sender, dataString) => {
                 //_context.StartActivity(typeof(MainActivity));
+                Toast.MakeText(_context, "Login success. Please close the browser if it doesn't automatically close", ToastLength.Short).Show();
 
                 _tcs.SetResult(new InvokeResult {
                     Response = dataString,
@@ -71,8 +72,7 @@ namespace XamarinForms.OidcClient.Droid.Services.Oidc
             });
 
             // launch
-            customTabsIntent.LaunchUrl(_context, Android.Net.Uri.Parse(options.StartUrl));
-
+            customTabsIntent.LaunchUrl((Activity)_context, Android.Net.Uri.Parse(options.StartUrl));
             // need an intent to be triggered when browsing to the "io.identityserver.native://callback"
             // scheme/URI => OidcCallbackInterceptorActivity
             return _tcs.Task;

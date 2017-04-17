@@ -18,7 +18,7 @@ namespace XamarinForms.OidcClient.Droid.Services.Oidc
                 clientSecret, 
                 scope, 
                 returnUrl,
-                new ChromeCustomTabsWebView(Forms.Context));
+                new ChromeCustomTabsWebView());
             return new IdentityModel.OidcClient.OidcClient(options);
         }
     }
